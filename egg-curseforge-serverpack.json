@@ -38,7 +38,7 @@
     "variables": [
         {
             "name": "Curseforge Modpack ID",
-            "description": "The modpack project ID from CurseForge found on the modpack page.\r\n\r\n(Ex. https:\/\/minecraft.curseforge.com\/projects\/sevtech-ages ID is 268208)",
+            "description": "(TEST) The modpack project ID from CurseForge found on the modpack page.\r\n\r\n(Ex. https:\/\/minecraft.curseforge.com\/projects\/sevtech-ages ID is 268208)",
             "env_variable": "MODPACK_ID",
             "default_value": "426926",
             "user_viewable": true,
