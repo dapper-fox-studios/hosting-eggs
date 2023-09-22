@@ -1,0 +1,62 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2023-09-22T21:38:46+00:00",
+    "name": "Forge Installer",
+    "author": "contact@dapperfoxgroup.com",
+    "description": "An egg used to install the Minecraft mod loader Forge into a server container.",
+    "features": null,
+    "docker_images": {
+        "Java 17": "ghcr.io\/pterodactyl\/yolks:java_17"
+    },
+    "file_denylist": [],
+    "startup": "java -Xms128M -Xmx$(({{SERVER_MEMORY}}-512))M {{STARTUP_FLAGS}} -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Fabric Installer Egg Script\r\n\r\n# Install sudo, curl, and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl openjdk-11-jdk-headless\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n\r\n# Download Fabric Installer\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o forge_installer.jar -L \"https:\/\/maven.minecraftforge.net\/net\/minecraftforge\/forge\/${MINECRAFT_VERSION}-${FORGE_VERSION}\/forge-${MINECRAFT_VERSION}-${FORGE_VERSION}-installer.jar\"\r\n\r\n# Cleanup old installed files\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/configs\r\nrm -rf \/mnt\/server\/defaultconfigs\r\nrm -rf \/mnt\/server\/kubejs\r\nrm -rf \/mnt\/server\/scripts\r\n\r\n# Run installer\r\njava -jar forge_installer.jar --installServer\r\n\r\n# Download Forge Wrapper if Minecraft version is 1.17 or higher.\r\n[[ \"${MINECRAFT_VERSION}\" =~ ^[0-9]+\\.(1[7-9]|[2-9][0-9]+)(\\.[0-9]+)?$ ]] && curl -o server.jar \"https:\/\/download.kinetichosting.net\/minecraft\/forge-launch-jar\/server.jar\"\r\n\r\n# Cleanup\r\nrm -f forge_installer.jar\r\nrm -f run.sh\r\nrm -f run.bat\r\nrm -f forge_installer.jar.log",
+            "container": "debian:buster-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Minecraft Version",
+            "description": "The version of Minecraft to be installed.",
+            "env_variable": "MINECRAFT_VERSION",
+            "default_value": "1.20.1",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Forge Version",
+            "description": "The version of Forge to be installed.",
+            "env_variable": "FORGE_VERSION",
+            "default_value": "47.2.0",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Server Jarfile",
+            "description": "Full name of the JAR file to use to run the server.",
+            "env_variable": "SERVEr_JARFILE",
+            "default_value": "server.jar",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}

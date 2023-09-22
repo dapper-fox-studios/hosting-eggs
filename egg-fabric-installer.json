@@ -1,0 +1,72 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2023-09-22T21:38:31+00:00",
+    "name": "Fabric Installer",
+    "author": "contact@dapperfoxgroup.com",
+    "description": "An egg used to install the Minecraft mod loader Fabric into a server container.",
+    "features": null,
+    "docker_images": {
+        "Java 17": "ghcr.io\/pterodactyl\/yolks:java_17"
+    },
+    "file_denylist": [],
+    "startup": "java -Xms128M -Xmx$(({{SERVER_MEMORY}}-512))M {{STARTUP_FLAGS}} -Dterminal.jline=false -Dterminal.ansi=true -jar {{SERVER_JARFILE}}",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Done, start server by running fabric-server-launch.jar\"\r\n}",
+        "logs": "{}",
+        "stop": "stop"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/bash\r\n# Fabric Installer Egg Script\r\n\r\n# Install sudo, curl, and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl openjdk-11-jdk-headless\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n\r\n# Download Fabric Installer\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o server.jar -L \"https:\/\/meta.fabricmc.net\/v2\/versions\/loader\/${MINECRAFT_VERSION}\/${LOADER_VERSION}\/${INSTALLER_VERSION}\/server\/jar\"\r\n\r\n# Cleanup old installed files\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/configs\r\nrm -rf \/mnt\/server\/defaultconfigs\r\nrm -rf \/mnt\/server\/.fabric",
+            "container": "debian:buster-slim",
+            "entrypoint": "bash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Minecraft Version",
+            "description": "The version of Minecraft to be installed.",
+            "env_variable": "MINECRAFT_VERSION",
+            "default_value": "1.20.2",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Loader Version",
+            "description": "The version of the Fabric loader to be installed.",
+            "env_variable": "LOADER_VERSION",
+            "default_value": "0.14.22",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        },
+        {
+            "name": "Server Jarfile",
+            "description": "Full name of the JAR file to use to run the server.",
+            "env_variable": "SERVER_JARFILE",
+            "default_value": "server.jar",
+            "user_viewable": true,
+            "user_editable": false,
+            "rules": "required|string|max:24",
+            "field_type": "text"
+        },
+        {
+            "name": "Installer Version",
+            "description": "The version of the Fabric Installer to download.",
+            "env_variable": "INSTALLER_VERSION",
+            "default_value": "0.11.2",
+            "user_viewable": false,
+            "user_editable": false,
+            "rules": "required|string|max:20",
+            "field_type": "text"
+        }
+    ]
+}
