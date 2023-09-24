@@ -39,9 +39,9 @@
             "field_type": "text"
         },
         {
-            "name": "Forge Version",
+            "name": "Loader Version",
             "description": "The version of Forge to be installed.",
-            "env_variable": "FORGE_VERSION",
+            "env_variable": "LOADER_VERSION",
             "default_value": "47.2.0",
             "user_viewable": true,
             "user_editable": false,
