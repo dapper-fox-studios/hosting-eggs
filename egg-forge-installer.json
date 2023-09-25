@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2023-09-22T21:38:46+00:00",
+    "exported_at": "2023-09-25T05:31:08+00:00",
     "name": "Forge Installer",
     "author": "contact@dapperfoxgroup.com",
     "description": "An egg used to install the Minecraft mod loader Forge into a server container.",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/bash\r\n# Fabric Installer Egg Script\r\n\r\n# Install sudo, curl, and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl openjdk-11-jdk-headless\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n\r\n# Download Fabric Installer\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o forge_installer.jar -L \"https:\/\/maven.minecraftforge.net\/net\/minecraftforge\/forge\/${MINECRAFT_VERSION}-${FORGE_VERSION}\/forge-${MINECRAFT_VERSION}-${FORGE_VERSION}-installer.jar\"\r\n\r\n# Cleanup old installed files\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/configs\r\nrm -rf \/mnt\/server\/defaultconfigs\r\nrm -rf \/mnt\/server\/kubejs\r\nrm -rf \/mnt\/server\/scripts\r\n\r\n# Run installer\r\njava -jar forge_installer.jar --installServer\r\n\r\n# Download Forge Wrapper if Minecraft version is 1.17 or higher.\r\n[[ \"${MINECRAFT_VERSION}\" =~ ^[0-9]+\\.(1[7-9]|[2-9][0-9]+)(\\.[0-9]+)?$ ]] && curl -o server.jar \"https:\/\/download.kinetichosting.net\/minecraft\/forge-launch-jar\/server.jar\"\r\n\r\n# Cleanup\r\nrm -f forge_installer.jar\r\nrm -f run.sh\r\nrm -f run.bat\r\nrm -f forge_installer.jar.log",
+            "script": "#!\/bin\/bash\r\n# Fabric Installer Egg Script\r\n\r\n# Install sudo, curl, and java OpenJDK\r\napt-get update -y\r\napt-get upgrade -y\r\nmkdir -p \/usr\/share\/man\/man1 \/usr\/share\/man\/man2\r\napt -y install sudo curl openjdk-11-jdk-headless\r\nsudo dpkg --configure -a\r\nupdate-alternatives --config java\r\n\r\n# Download Fabric Installer\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\ncurl -o forge_installer.jar -L \"https:\/\/maven.minecraftforge.net\/net\/minecraftforge\/forge\/${MINECRAFT_VERSION}-${LOADER_VERSION}\/forge-${MINECRAFT_VERSION}-${LOADER_VERSION}-installer.jar\"\r\n\r\n# Cleanup old installed files\r\nrm -rf \/mnt\/server\/libraries\r\nrm -rf \/mnt\/server\/mods\r\nrm -rf \/mnt\/server\/configs\r\nrm -rf \/mnt\/server\/defaultconfigs\r\nrm -rf \/mnt\/server\/kubejs\r\nrm -rf \/mnt\/server\/scripts\r\n\r\n# Run installer\r\njava -jar forge_installer.jar --installServer\r\n\r\n# Download Forge Wrapper if Minecraft version is 1.17 or higher.\r\n[[ \"${MINECRAFT_VERSION}\" =~ ^[0-9]+\\.(1[7-9]|[2-9][0-9]+)(\\.[0-9]+)?$ ]] && curl -o server.jar \"https:\/\/download.kinetichosting.net\/minecraft\/forge-launch-jar\/server.jar\"\r\n\r\n# Cleanup\r\nrm -f forge_installer.jar\r\nrm -f run.sh\r\nrm -f run.bat\r\nrm -f forge_installer.jar.log",
             "container": "debian:buster-slim",
             "entrypoint": "bash"
         }
@@ -51,7 +51,7 @@
         {
             "name": "Server Jarfile",
             "description": "Full name of the JAR file to use to run the server.",
-            "env_variable": "SERVEr_JARFILE",
+            "env_variable": "SERVER_JARFILE",
             "default_value": "server.jar",
             "user_viewable": true,
             "user_editable": false,
